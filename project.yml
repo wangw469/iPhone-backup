@@ -28,6 +28,9 @@ targets:
         CODE_SIGNING_ALLOWED: "NO"
         CODE_SIGNING_REQUIRED: "NO"
         CODE_SIGN_IDENTITY: ""
+        # 双保险:即使自定义 Info.plist 未被采用,构建设置也能把权限声明注入产物
+        INFOPLIST_KEY_NSPHotoLibraryUsageDescription: "需要访问相册以统计和删除视频。删除前请确认已备份。"
+        INFOPLIST_KEY_NSPHotoLibraryAddUsageDescription: "需要访问相册以删除视频。"
 schemes:
   VideoWiper:
     build:

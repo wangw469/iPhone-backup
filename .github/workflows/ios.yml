@@ -23,6 +23,10 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: Verify Info.plist wiring
+        run: |
+          grep -a "INFOPLIST_FILE" VideoWiper.xcodeproj/project.pbxproj
+
       - name: Build app (no signing)
         run: |
           xcodebuild \
@@ -34,6 +38,13 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
+
+      - name: Verify built Info.plist
+        run: |
+          set -euo pipefail
+          APP=$(find build/Build/Products/Release-iphoneos -name "*.app" -maxdepth 1 | head -1)
+          echo "APP=$APP"
+          plutil -p "$APP/Info.plist" | grep -E "NSPhotoLibraryUsageDescription" || (echo "PRIVACY KEYS MISSING FROM BUILT Info.plist:"; plutil -p "$APP/Info.plist"; exit 1)
 
       - name: Package unsigned IPA
         run: |
