@@ -221,7 +221,7 @@ struct ContentView: View {
             return
         }
         PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.deleteAssets(videos as NSArray)
+            PHAssetChangeRequest.deleteAssets(videos)
         }) { success, error in
             DispatchQueue.main.async {
                 isWorking = false
