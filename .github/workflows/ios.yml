@@ -26,7 +26,6 @@ jobs:
       - name: Verify Info.plist wiring
         run: |
           grep -a "INFOPLIST_FILE" VideoWiper.xcodeproj/project.pbxproj
-          awk '/Begin XCBuildConfiguration section/,/End XCBuildConfiguration section/' VideoWiper.xcodeproj/project.pbxproj | grep -aE "PRODUCT_BUNDLE_IDENTIFIER|MARKETING_VERSION|CURRENT_PROJECT_VERSION|INFOPLIST|GENERATE_INFOPLIST|CODE_SIGNING" | sort | uniq -c
 
       - name: Build app (no signing)
         run: |
@@ -39,6 +38,16 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
+
+      - name: Inject photo permission strings
+        run: |
+          set -euo pipefail
+          APP=$(find build/Build/Products/Release-iphoneos -name "*.app" -maxdepth 1 | head -1)
+          echo "APP=$APP"
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string '需要访问相册以统计和删除视频。删除前请确认已备份。'" "$APP/Info.plist" || \
+          /usr/libexec/PlistBuddy -c "Set :NSPhotoLibraryUsageDescription '需要访问相册以统计和删除视频。删除前请确认已备份。'" "$APP/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryAddUsageDescription string '需要访问相册以删除视频。'" "$APP/Info.plist" || \
+          /usr/libexec/PlistBuddy -c "Set :NSPhotoLibraryAddUsageDescription '需要访问相册以删除视频。'" "$APP/Info.plist"
 
       - name: Verify built Info.plist
         run: |
