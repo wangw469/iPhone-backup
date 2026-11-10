@@ -1,0 +1,21 @@
+# Xcode / build
+build/
+DerivedData/
+*.xcuserdata/
+*.xcodeproj/
+*.xcworkspace/
+*.ipa
+*.dSYM.zip
+*.dSYM/
+
+# Signing secrets: 永远不要提交
+*.mobileprovision
+*.p12
+*.cer
+*.key
+
+# macOS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/

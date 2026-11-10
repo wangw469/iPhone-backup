@@ -1,0 +1,38 @@
+# XcodeGen spec: CI 用它生成 .xcodeproj,不在本机提交 pbxproj
+# 本地有 Mac 的话装 xcodegen 后跑 `xcodegen generate` 即可打开
+name: VideoWiper
+options:
+  bundleIdPrefix: com.wangw469
+  deploymentTarget:
+    iOS: "16.0"
+targets:
+  VideoWiper:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - path: VideoWiper
+        excludes:
+          - Info.plist
+    info:
+      path: VideoWiper/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.wangw469.VideoWiper
+        PRODUCT_NAME: VideoWiper
+        SWIFT_VERSION: "5.0"
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGNING_ALLOWED: "NO"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_IDENTITY: ""
+schemes:
+  VideoWiper:
+    build:
+      targets:
+        VideoWiper: all
+    run:
+      config: Debug
+    archive:
+      config: Release
