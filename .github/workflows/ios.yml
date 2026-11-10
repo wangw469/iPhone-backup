@@ -26,6 +26,7 @@ jobs:
       - name: Verify Info.plist wiring
         run: |
           grep -a "INFOPLIST_FILE" VideoWiper.xcodeproj/project.pbxproj
+          awk '/Begin XCBuildConfiguration section/,/End XCBuildConfiguration section/' VideoWiper.xcodeproj/project.pbxproj | grep -aE "PRODUCT_BUNDLE_IDENTIFIER|MARKETING_VERSION|CURRENT_PROJECT_VERSION|INFOPLIST|GENERATE_INFOPLIST|CODE_SIGNING" | sort | uniq -c
 
       - name: Build app (no signing)
         run: |
